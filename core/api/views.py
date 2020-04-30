@@ -2,7 +2,7 @@ from ..models import Customer
 from .serializers import CustomerSerializer, UserRegisterSerializer
 from djangorestframework_camel_case.parser import CamelCaseJSONParser, CamelCaseFormParser
 from djangorestframework_camel_case.render import CamelCaseJSONRenderer, CamelCaseBrowsableAPIRenderer
-from rest_framework import viewsets
+from rest_framework import viewsets, filters
 from rest_framework.permissions import AllowAny
 from rest_framework.generics import CreateAPIView
 from rest_framework.authtoken.views import ObtainAuthToken
@@ -33,6 +33,8 @@ class CustomerViewSet(viewsets.ModelViewSet):
     serializer_class = CustomerSerializer
     parser_classes = [CamelCaseJSONParser, CamelCaseFormParser]
     renderer_classes = [CamelCaseJSONRenderer, CamelCaseBrowsableAPIRenderer]
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['name', 'document', 'phone']
 
     def get_queryset(self):
         user = self.request.user
